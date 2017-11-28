@@ -31,6 +31,9 @@ dependencies {
     //Design Suppport Library dependency
     compile 'com.android.support:design:26.+'
 
+    //recyclerview
+    compile 'com.android.support:recyclerview-v7:26.+'
+
     //Universal image loader
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
