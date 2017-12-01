@@ -1,9 +1,7 @@
 package passdown.com.forsale;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +14,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import passdown.com.forsale.models.Post;
 import passdown.com.forsale.util.UniversalImageLoader;
 
-public class PostFragment extends Fragment {
+public class PostFragment extends Fragment{
 
     private static final String TAG = "PostFragment";
 
@@ -48,8 +54,6 @@ public class PostFragment extends Fragment {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-
-
         init();
 
         return view;
@@ -57,32 +61,42 @@ public class PostFragment extends Fragment {
 
     private void init(){
 
-        mPost.setOnClickListener(
-                new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View view) {
+        mPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Posting...");
+                if(!isEmpty(mTitle.getText().toString())
+                        && !isEmpty(mDescription.getText().toString())
+                        && !isEmpty(mPrice.getText().toString())
+                        && !isEmpty(mCountry.getText().toString())
+                        && !isEmpty(mStateProvince.getText().toString())
+                        && !isEmpty(mCity.getText().toString())
+                        && !isEmpty(mContactEmail.getText().toString())){
+                    upload();
+                }else{
+                    Toast.makeText(getActivity(), "You must fill out all the fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-                        //Get the values from the text fields.
-                        title = mTitle.getText().toString();
-                        description = mDescription.getText().toString();
-                        price = mPrice.getText().toString();
-                        country = mCountry.getText().toString();
-                        stateProvince = mStateProvince.getText().toString();
-                        city = mCity.getText().toString();
-                        email = mContactEmail.getText().toString();
+    }
 
-                        //Bundle the strings
-                        Bundle arg = new Bundle(7);
-                        arg.putString("title", title);
-                        arg.putString("description", description);
-                        arg.putString("price", price);
-                        arg.putString("country", country);
-                        arg.putString("state/province", stateProvince);
-                        arg.putString("city", city);
-                        arg.putString("email", email);
-                    }
-                });
+    private void upload(){
+        Toast.makeText(getActivity(), "Uploading! Please wait...", Toast.LENGTH_SHORT).show();
+
+        final String postId = FirebaseDatabase.getInstance().getReference().push().getKey();
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference();
+
+        Post post = new Post(postId,
+                FirebaseAuth.getInstance().getCurrentUser().getUid(),mTitle.getText().toString(),
+                mDescription.getText().toString(), mPrice.getText().toString(),
+                mCountry.getText().toString(), mStateProvince.getText().toString(),
+                mCity.getText().toString(), mContactEmail.getText().toString());
+
+        Task<Void> postRef = ref.child("posts").child(postId).setValue(post);
+
     }
 
     private void resetFields(){
