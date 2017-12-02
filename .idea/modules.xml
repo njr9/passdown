@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://C:\Users\Krafty Komp\AndroidStudioProjects\passdown-master\ForSale-Starting-Point-master.iml" filepath="C:\Users\Krafty Komp\AndroidStudioProjects\passdown-master\ForSale-Starting-Point-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/passdown-master.iml" filepath="$PROJECT_DIR$/passdown-master.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/ForSale-Starting-Point-master.iml" filepath="$PROJECT_DIR$/ForSale-Starting-Point-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+>>>>>>> 92bf3bb125befb7b0aa5ed11f87e9ad0e2625f97
     </modules>
   </component>
 </project>
